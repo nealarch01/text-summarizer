@@ -57,7 +57,7 @@ def build_similarity_matrix(sentences, stop_words):
     return similarity_matrix
 
 
-def generate_summary(file_name, top_n=5):
+def generate_summary(file_name):
     # nltk.download("stopwords")
     stop_words = stopwords.words('english')
     summarize_text = []
@@ -76,11 +76,17 @@ def generate_summary(file_name, top_n=5):
     ranked_sentence = sorted(((scores[i],s) for i,s in enumerate(sentences)), reverse=True)    
     # print("Indexes of top ranked_sentence order are ", ranked_sentence)    
 
-    for i in range(top_n):
-      summarize_text.append(" ".join(ranked_sentence[i][1]))
+    half = len(ranked_sentence) // 2
+    
+    if half == 0:
+        half = 1
+
+    for i in range(half):
+        summarize_text.append(" ".join(ranked_sentence[i][1]))
 
     # Step 5 - Offcourse, output the summarize text
-    print("Summarized Text: \n", ". ".join(summarize_text))
+    return ". ".join(summarize_text)
 
 # let's begin
-generate_summary( "msft.txt", 2)
+summary = generate_summary("msft.txt")
+print(summary)
